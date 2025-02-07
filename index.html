@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #00A170, #006B4A);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(-50px);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .message {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            line-height: 1.6;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(0.5px);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .message {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Happy Birthday!</h1>
+        <div class="message">
+            May your day be filled with endless joy<br>
+            and wonderful surprises!<br>
+            🎉 🎂 ✨
+        </div>
+    </div>
+
+    <script>
+        // Animate text
+        gsap.to("h1", {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: "back.out(1.7)"
+        });
+
+        gsap.to(".message", {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            delay: 0.6,
+            ease: "back.out(1.7)"
+        });
+
+        // Create floating balloons
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.left = Math.random() * window.innerWidth + 'px';
+            balloon.style.bottom = '-50px';
+            balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 85%, 65%)`;
+            document.body.appendChild(balloon);
+
+            gsap.to(balloon, {
+                y: -window.innerHeight - 100,
+                x: (Math.random() - 0.5) * 200,
+                opacity: [0, 1, 1, 0],
+                scale: 1 + Math.random() * 0.5,
+                duration: 4 + Math.random() * 4,
+                ease: "power1.out",
+                onComplete: () => balloon.remove()
+            });
+        }
+
+        // Create sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            document.body.appendChild(sparkle);
+
+            gsap.to(sparkle, {
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+                duration: 1 + Math.random(),
+                onComplete: () => sparkle.remove()
+            });
+        }
+
+        // Create elements periodically
+        setInterval(createBalloon, 1000);
+        setInterval(createSparkle, 500);
+
+        // Initial burst
+        for(let i = 0; i < 10; i++) {
+            setTimeout(createBalloon, i * 200);
+            setTimeout(createSparkle, i * 100);
+        }
+    </script>
+</body>
+</html>
